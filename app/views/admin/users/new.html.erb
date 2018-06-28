@@ -1,0 +1,22 @@
+<h1>Nouvel utilisateur</h1>
+
+<%= form_for @user, :url=> {:controller => :users, :action=>:create} do |f| %>
+  <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize @user.errors.count, "erreur", "erreurs" %> :</h2>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </div>
+  <% end %>
+
+  <p><%= f.label :login, "Login" %>:    			<%= f.text_field :login, :readonly=>true %>		</p>
+  <p><%= f.label :name, "Nom" %>:     				<%= f.text_field :name, :readonly=>true  %>		</p>
+  <p><%= f.label :name, "DN" %>:     				<%= f.text_field :dn, :readonly=>true  %>		</p>
+  <p><%= f.label :is_admin, "Admin" %>:  			<%= f.check_box :is_admin %></p>
+  <p><%= f.label :all_channels, "Tous canaux" %>: 	<%= f.check_box :all_channels %></p>
+  <p><%= f.label :profile_id, "Profil" %>:	   		<%= f.select :profile_id, Profile.find(:all).collect {|p| [ p.name, p.id ] },{ :include_blank => true } %>		</p>
+  <p><%= f.submit "Enregistrer" %>										</p>
+<% end %>
+
+<%= link_to 'Retour', admin_users_path %>

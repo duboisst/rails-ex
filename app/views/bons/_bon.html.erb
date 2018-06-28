@@ -1,0 +1,12 @@
+<tr>
+  <td><%=h bon.site%></td>
+  <%= canal_column_body(bon).html_safe%>
+  <td><%= sprintf("%010d", bon.op) %></td>
+  <td><%= sprintf("%010d", bon.commande) %></td>
+  <td><%=h bon.date.strftime("%d/%m/%Y %H:%M")%>     </td>
+  <td><%= link_to image_tag('loupe.gif'), bon_path(:bon => bon.to_hash),
+		 :target => "_blank",
+                 :onclick => "toggle_active(this.parentNode.parentNode);"
+        %>
+  </td>
+</tr>

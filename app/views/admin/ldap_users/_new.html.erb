@@ -1,0 +1,11 @@
+<h1>Recherche nouvel utilisateur</h1>
+
+<%= form_tag ((root_path== "/")?"":root_path) + "/admin/ldap_users", :method=>:get do  %>
+	<p>
+		<label for="ldap_search">Nom ou login: </label>
+		<%=  text_field_tag 'ldap_search',  params[:ldap_search]  %>
+		<%=  submit_tag "Rechercher"%>
+	</p>
+
+<% end %>
+

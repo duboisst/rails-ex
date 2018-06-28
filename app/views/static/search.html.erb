@@ -1,0 +1,65 @@
+<style> 
+	#page * {margin-left:0;padding-left:0}
+	#page ul {margin-left:16px;padding-left:0}
+</style>
+
+<h1>Aide pour la recherche</h1>
+
+<p>Vous devez saisir l’information recherchée dans une ou plusieurs des cases ci-dessus.</p>
+
+<p><b>Case Contenu</b><br/>
+Dans cette case vous pouvez saisir soit :<br/>
+<ul><li>un numéro de BL ou de BLR</li>
+<li>un numéro de commande SAP</li>
+<li>du texte contenu dans le BL</li></ul>
+</p>
+
+<p>La recherche de texte dans le contenu peut se faire sur plusieurs mots, pour cela il faut utiliser la syntaxe suivante:</p>
+
+<p><ul><li>Pour rechercher les documents contenant au moins un des mots suivants:</li></ul>
+<code>mot1 mot2 mot3</code>
+</p>
+
+<p><ul><li>Pour rechercher les documents contenant tous les mots suivants n'importe où dans le texte:</li></ul>
+<code>+mot1 +mot2 +mot3</code>
+</p>
+
+<p><ul><li>Pour rechercher les documents contenant exactement la suite des 3 mots suivants:</li></ul>
+<code>"mot1 mot2 mot3"</code>
+</p>
+
+<p><ul><li>Pour rechercher les documents ne contenant pas un mot:</li></ul>
+<code>-mot</code>
+</p>
+
+<p><u>Exemple:</u><br/>
+<code>"16100 COGNAC" -CEFPODOXIME</code><br/>
+va retrouver les documents contenant la suite de mots <i>16100 COGNAC</i> mais pas le mot <i>CEFPODOXIME</i>
+</p>
+
+<p>ou encore<br/>
+<code>+("boulevard romain" 84PC990YT82K) +montargis -doliprane</code><br/>
+va retrouver les documents qui contiennent soit la suite de mot <i>boulevard romain</i>, soit le mot <i>84PC990YT82K</i> et aussi le mot <i>montargis</i> en excluant tous les documents qui contiennent le mot <i>doliprane</i>
+</p> 
+
+
+<p><b>Case Site émétteur</b><br/>
+Si on choisit –Tous-, la recherche se fait sur l’ensemble des sites, sinon sur le site choisi.
+</p>
+
+<p><b>Case Canal</b></br/>
+Cette case n’apparaît que si vous avez accès à plusieurs canaux. Dans ce cas, si on choisit –Tous-, la recerche se fait sur tous les canaux auxquels on a accès, sinon sur le canal choisi.
+</p>
+
+<p><b>Case Commande</b></br/>
+Dans cette case vous pouvez saisir un numéro de commande.
+</p>
+
+<p><b>Case OP</b></br/>
+Dans cette case vous pouvez saisir un numéro de BL ou BLR.
+</p>
+
+<p><b>Case Dates (jj/mm/aaa)</b><br/>
+<b>Après</b>: Recherche les BL émis après cette date<br/>
+<b>Avant</b>: Recherche les BL émis avant cette date
+</p>

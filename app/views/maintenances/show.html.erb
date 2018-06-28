@@ -1,0 +1,12 @@
+<h1>CABLe est indisponible</h1>
+
+<p>
+<%=  @maintenance.reason %>
+</p>
+
+<p>Pour toute information complémentaire vous pouvez contacter <a href="mailto:Support-CABLe PH/FR">Support-CABLe PH/FR</a> ou <a href="mailto:support-cable@sanofi-aventis.com">support-cable@sanofi-aventis.com</a>.</p>
+
+<%if @preview%>
+  <p>&nbsp;</p>
+  <p style="font-weight:bold;color:red">Pour passer réellement en mode maintenance, n'oubliez pas de cliquer sur le bouton Enregistrer.</p>
+<%end %>

@@ -1,0 +1,31 @@
+<%=  render(:partial  => "/admin/ldap_users/new") %>
+
+<%unless @users.nil? %>
+	<table>
+	  <thead>
+	    <tr>
+	      <td>Login</td><td>Nom</td><td>eMail</td>
+	      <td></td>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+		<%for user in @users%>
+		  <tr>
+		    <td><%=h   user[:login] %></td>
+		    <td><%=h   user[:name]  %></td>
+		    <td><%=h   user[:mail]  %></td>
+		    <td><%=link_to "Ajouter", new_admin_user_path(user)%></td>
+		  </tr>
+		<% end %>
+		<%if @users.total_pages > 1%>
+			<tr>
+				<td colspan="<%= columns_number %>" style="text-align:center"><%= will_paginate @users, :prev_label => 'Précédent', :next_label => 'Suivant', :params => params %></td>
+			</tr>
+		<% end %>
+
+	    </tbody>
+	</table>
+<% end %>
+
+<%= link_to 'Retour', admin_users_path %>

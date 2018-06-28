@@ -1,0 +1,39 @@
+<%date1 = params[:date1].strftime("%d/%m/%Y") rescue ""%>
+<%date2 = params[:date2].strftime("%d/%m/%Y") rescue ""%>
+
+<%= form_tag( (((root_path=="/")?"":root_path) + "/bons"), :method => :get) do %>
+    <table id="search_form_table">
+      <tr>
+       <td><label for="site">Site émetteur</label></td>
+       <td <%unless @current_user.multiple_channels%> colspan="3"<%end%>>
+          <%if @sites.length > 1%>
+                 <% default_option = '<option value="">--Tous--</option>'.html_safe
+                 #@sites.each { |item| options_for_sites << options_for_select(item, params[:site])}%>
+                 <%= select_tag 'site', default_option + options_from_collection_for_select(@sites, 'to_s', 'to_s', params[:site])%>
+          <%end%>
+       </td>
+       <%if @current_user.multiple_channels%>
+         <td><label for="canal">Canal: </label></td>
+         <td>
+            <%= select_tag 'canal', '<option value="">--Tous--</option>'.html_safe + options_from_collection_for_select(@current_user.channels, 'code', 'name', params[:canal])%>
+         </td>
+      <%end%>
+      </tr>
+      <tr>
+        <td><label for="commande">Commande</label></td>
+        <td><%= text_field_tag 'commande', params[:commande], :size=>10  %></td>
+        <td><label for="op">OP</label></td>
+        <td><%= text_field_tag 'op', params[:op], :size=>10  %></td>
+      </tr>
+      <tr>
+        <td><label for="date1">Après (jj/mm/aaaa)</label></td>
+        <td><%= text_field_tag 'date1', date1, :size=>10  %></td>
+        <td><label for="date2">Avant (jj/mm/aaaa)</label></td>
+        <td><%= text_field_tag 'date2', date2, :size=>10  %></td>
+      </tr>
+      <tr>
+        <td><label for="contenu">Contenu</label></td>
+        <td colspan="3"><%= text_field_tag 'contenu', params[:contenu], :size=>50  %> <%= submit_tag 'Ok' %></td>
+      </tr>
+    </table>
+<% end %>

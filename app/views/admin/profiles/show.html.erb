@@ -1,0 +1,17 @@
+<h1>Profil</h1>
+
+<p>
+  <b>Nom:</b>
+  <%=h @profile.name %>
+</p>
+
+<%if !@profile.channels.empty?%>
+	<p>Canaux de distribution autorises<br />
+		<%for channel in @profile.channels%>
+			- <%=channel.name%><br/>
+		<%end%>
+	</p>
+<%end%>
+
+<%= link_to 'Modifier', edit_admin_profile_path(@profile) %> |
+<%= link_to 'Retour', admin_profiles_path %>

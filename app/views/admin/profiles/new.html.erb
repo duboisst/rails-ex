@@ -1,0 +1,27 @@
+<h1>Nouveau profil</h1>
+
+<%= form_for @profile, :url=> {:action=>:create} do |f| %>
+  <% if @profile.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize @profile.errors.count, "erreur", "erreurs" %> :</h2>
+          <% @profile.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </div>
+  <% end %>
+
+  <p>
+    <%= f.label :name, "Nom" %>
+    <%= f.text_field :name %>
+  </p>
+  
+  <p>
+	<%=  render(:partial  => "/admin/profiles/channels", :object => @profile.channels)  %>
+  </p>
+
+  <p>
+    <%= f.submit "Enregistrer" %>
+  </p>
+<% end %>
+
+<%= link_to 'Retour', admin_profiles_path %>

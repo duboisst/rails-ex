@@ -1,0 +1,25 @@
+<h1>Profils</h1>
+
+<table>
+  <thead>
+    <tr>
+      <td>Nom</td>
+      <td></td><td></td><td></td>
+    </tr>
+  </thead>
+
+  <tbody>
+	<% for profile in @profiles %>
+	  <tr>
+	    <td><%=h profile.name %></td>
+	    <td><%= link_to 'Afficher', :action=>:show, :id=>profile.id %></td>
+	    <td><%= link_to 'Modifier', edit_admin_profile_path(profile) %></td>
+	    <td><%= link_to_unless !profile.users.empty?, 'Supprimer', {:action=>:show, :id=>profile.id}, :data => { :confirm => "Etes-vous certain de vouloir supprimer #{profile.name} ?" }, :method => :delete %></td>
+	  </tr>
+	<% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'Nouveau profil', new_admin_profile_path %>

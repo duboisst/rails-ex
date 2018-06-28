@@ -1,0 +1,8 @@
+<h1>Identification</h1>
+  <%=  form_tag root_url + "/sessions" do  %>
+        <label for="name">Identifiant:</label>
+        <%= text_field_tag  'login[name]',  params[:name]  %>
+        <label for="password">Mot de passe:</label>
+        <%= password_field_tag 'login[password]',  params[:password]  %>
+        <%= submit_tag "Ok" %>
+  <%  end  %>

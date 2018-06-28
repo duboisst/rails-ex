@@ -1,0 +1,33 @@
+<h1>Liste des contacts</h1>
+
+<table>
+  <thead>
+    <tr>
+        <td>Nom</td>
+        <td>Tel</td>
+        <td>Adresse</td>
+        <td>Information</t>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for contact in @contacts %>
+        <tr>
+            <td><%=h contact.name %></td>
+            <td><%=h contact.tel %></td>
+            <td><%=(h contact.address).gsub(/\n/,'<br />').html_safe %></td>
+            <td><%=(h contact.info).gsub(/\n/,'<br />').html_safe %></td>
+            <td><%= link_to 'Afficher', {:action=>:show, :id=>contact.id} %></td>
+            <td><%= link_to 'Modifier', edit_admin_contact_path(contact) %></td>
+            <td><%= link_to 'Supprimer', {:action=>:show, :id=>contact.id}, :data => { :confirm => "Etes-vous certain de vouloir supprimer #{contact.name} ?" }, :method => :delete %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'Nouveau contact', new_admin_contact_path %>

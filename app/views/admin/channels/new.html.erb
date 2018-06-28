@@ -1,0 +1,26 @@
+<h1>Nouveau canal de distribution</h1>
+
+<%= form_for @channel, :url=> {:action=>:create} do |f| %>
+  <% if @channel.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize @channel.errors.count, "erreur", "erreurs" %> :</h2>
+          <% @channel.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </div>
+  <% end %>
+
+  <p>
+    <%= f.label :code %><br />
+    <%= f.text_field :code %>
+  </p>
+  <p>
+    <%= f.label "Nom" %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.submit "Enregistrer" %>
+  </p>
+<% end %>
+
+<%= link_to 'Retour', admin_channels_path %>

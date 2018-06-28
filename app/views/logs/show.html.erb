@@ -1,0 +1,25 @@
+<h1>Mes dernières recherches</h1>
+
+<ul class="histo">
+
+<%
+  cur_day = Date.today + 1.day
+  first = true
+  for log in @logs %>
+       <% d = log.created_at.getlocal.to_date %>
+       <% if !first and d < cur_day %>
+                </ul>
+       <% end %>
+       <% if d < cur_day %>
+              <li class="histo1"><%= h french_date(log.created_at.getlocal) %></li>
+              <li class="histo1">
+                <ul class="histo">
+                  <li class="histo2"><%= display_log(log).html_safe %> </li>
+       <% else %>
+                  <li class="histo2"><%= display_log(log).html_safe %> </li>
+       <% end %>
+       <% cur_day = d %>
+       <% first = false %>
+<% end %>
+     </ul>
+</ul>

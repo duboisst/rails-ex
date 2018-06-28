@@ -1,0 +1,15 @@
+<h1>Canal de distribution</h1>
+
+<p>
+  <b>Code:</b>
+  <%=h @channel.code %>
+</p>
+
+<p>
+  <b>Nom:</b>
+  <%=h @channel.name %>
+</p>
+
+
+<%= link_to 'Modifier', edit_admin_channel_path(@channel) %> |
+<%= link_to 'Retour', admin_channels_path %>

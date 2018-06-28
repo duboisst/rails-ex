@@ -1,0 +1,54 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    function toggle_active(e)
+    {
+      $$('#bl_table tr').each(function(item) {
+          item.removeClassName('active');
+      });
+      e.addClassName('active');
+    }
+</script>
+<% end %>
+
+<h1 id="search_title">Resultat de la recherche</h1>
+
+<div id="information">
+	<span>
+		<%if @search.length > 0 %>
+			<%=@search.total_entries%> bon<%if @search.total_entries > 1%>s<%end%> de livraison trouvé<%if @search.total_entries > 1%>s<%end%><!-- en <%=@elapsed_time%> secondes-->.
+		<%else%>
+			Aucun bon de livraison trouvé.
+		<%end%>
+	</span>
+</div>
+
+<div id="results">
+	<%if @search.length > 0 %>
+		<table id="bl_table">
+		<thead>
+			<%if @search.total_pages > 1%>
+				<tr class="table">
+					<td colspan="<%= columns_number() %>" style="font-weight:normal"><%= will_paginate @search, :prev_label => 'Précédent', :next_label => 'Suivant', :params => params %></td>
+				</tr>
+			<% end %>					
+			<tr>
+				<td>Site émetteur</td>
+				<%= canal_column_header.html_safe %>
+				<td>OP</td>
+				<td>Commande</td>
+				<td>Date</td>
+				<td>&nbsp;</td>
+			</tr>
+		</thead>
+		<tbody>
+			<%=  render(:partial  => "bons/bon",  :collection  =>  @search)  %>
+			<%if @search.total_pages > 1%>
+				<tr>
+					<td colspan="<%= columns_number() %>" style="text-align:center"><%= will_paginate @search, :prev_label => 'Précédent', :next_label => 'Suivant', :params => params %></td>
+				</tr>
+			<% end %>			
+		</tbody>
+		</table>
+	<%end%>
+	
+</div>

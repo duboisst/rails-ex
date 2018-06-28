@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>CABLe WebService description</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="/stylesheets/sd/sd.css" media="screen" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body {margin-left:50px}
+        pre {
+           display: block;
+           margin: 2em 0;
+           white-space: pre;
+           overflow: auto;
+           width: 650px;
+           line-height: 1.4;
+           border: 1px solid #ccc;
+           background: #ece9d8;
+           padding: 8px;
+           white-space: pre-wrap; /* css-3 */
+           white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+           white-space: -pre-wrap; /* Opera 4-6 */
+           white-space: -o-pre-wrap; /* Opera 7 */
+           word-wrap: break-word; /* Internet Explorer 5.5+ */
+        }
+    </style>
+  </head>
+  <body>
+      <h1>CABLe WebService</h1>
+    <p>Ce web service peut être utilisé pour :
+    <ul><li>obtenir une liste de bons de livraisons répondant à certains critères</li>
+        <li>obtenir le fichier pdf d'un bon de livraison.</p>
+    </ul>
+    <h2>Authentification</h2>
+
+    <p>L'accès à ce web service, nécessite d'être authentifié auprès du serveur.</p>
+    <p>L'authentification se fait par User/Password ou via un certificat client</p>
+    <h3>Authentification par User/Password</h3>
+    <p>Il s'agit d'une authentification HTTP BASIC. Le user/password peut être passé dans l'URL ou dans les entêtes HTTP.</p>
+    <p>L'appplication vérifie le user/password auprès du serveur <b>vds</b> vds-eu.sanofi-aventis.com, puis vérifie que l'utilisateur est autorisé à accéder à l'application CABLe.</p>
+    <h3>Authentification par certificat client</h3>
+    <p>Le serveur vérifie que le certificat présenté provient bien de l'autorité de certification <b>Sanofi-aventis authentication CA</b>, puis vérifie que l'utilisateur associé au certificat est autorisé à accéder à l'application CABLe.</p>
+
+    
+    <h2>Appel du web service</h2>
+    <p><pre><code>https://user:password@cable.sanofi-aventis.com/bons.xml?contenu=something</code></pre></p>
+
+    <h3>Paramètres possibles</h3>
+    <p>Tous les paramètres sont optionnels, mais il faut au moins l'un des paramètres <b>site</b>, <b>commande</b>, <b>op</b>, <b>canal</b> ou <b>contenu</b>.</p>
+    <table>
+        <tr>
+            <th>Paramètre</th><th>Description</th>
+        </tr>
+        <tr>
+            <td>contenu</td>
+            <td>Expression à rechercher. L'expression sera recherchée soit
+                dans le n° de commande, soit dans le n° d'OP,
+                soit dans le contenu des bons de livraison<br/>Vous pouvez consulter
+            la syntaxe d'une expression <a href="/static/search">ici</a>.</td>
+        </tr>
+        <tr>
+            <td>commande</td><td>Numéro de commande associé aux bon de livraison</td>
+        </tr>
+        <tr>
+            <td>op</td><td>Numéro d'OP associé aux bons de livraison</td>
+        </tr>
+        <tr>
+            <td>site</td><td>Nom du site qui a émis les bons de livraison</td>
+        </tr>
+        <tr>
+            <td>canal</td><td>Code du canal associé aux bons de livraison</td>
+        </tr>
+        <tr>
+            <td>limit</td><td>Nombre maximum de bons de livraison retournés (100 maximum)</td>
+        </tr>
+        <tr>
+            <td>offset</td><td>Premier bon de livraison retourné</td>
+        </tr>
+    </table>
+    <p>Si plusieurs critères de recherches sont renseignés, ils sont combiné par des ET logiques</p>
+    <p/>
+    <h3>Exemple</h3>
+    <p><pre><code>https://cable.sanofi-aventis.com/bons.xml?canal=PH&site=Amilly&commande=000221524&contenu=plavix%20doliprane&limit=40</code></pre></p>
+    <p>L'appel de cette URL renvoie les <b>40</b> derniers bons de livraison émis par le site d'<b>Amilly</b> pour le canal <b>PH</b>, qui correspondent à la commande 000221524 et qui contiennent les mots <b>plavix</b> ou <b>doliprane</b></p>
+    <p>Cette liste est renvoyée dans un fichier XML dont la sémantique est définie dans le document <a href="https://localhost/bons.xsd">https://cable.sanofi-aventis.com/bons.xsd</a>
+    <p><pre><code class="JS">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;ResultSet firstResultPosition="1" totalResultsReturned="2" xsi:schemaLocation="https://cable.sanofi-aventis.com https://cable.sanofi-aventis.com/bons.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" totalResultsAvailable="2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://cable.sanofi-aventis.com"&gt;
+  &lt;Result xlink:href="https://cable.sanofi-aventis.com/bon?path=%2Famy%2F2008%2F05%2Fbl-ph-0004500948-000221524.pdf" xlink:title="Site: Amilly Canal: Pharmacie Op: 0004500948 Commande: 000221524" xlink:label="/bon?path=%2Famy%2F2008%2F05%2Fbl-ph-0004500948-000221524.pdf"&gt;
+    &lt;Site&gt;Amilly&lt;/Site&gt;
+    &lt;Canal code="PH"&gt;Pharmacie&lt;/Canal&gt;
+    &lt;Op&gt;0004500948&lt;/Op&gt;
+    &lt;Commande&gt;000221524&lt;/Commande&gt;
+    &lt;Date&gt;2008-04-04 21:18:42&lt;/Date&gt;
+    &lt;Score&gt;0.771902084350586&lt;/Score&gt;
+  &lt;/Result&gt;
+  &lt;Result xlink:href="https://cable.sanofi-aventis.com/bon?path=%2Famy%2F2008%2F05%2Fbl-ph-0004500831-000221524.pdf" xlink:title="Site: Amilly Canal: Pharmacie Op: 0004500831 Commande: 000221524" xlink:label="/bon?path=%2Famy%2F2008%2F05%2Fbl-ph-0004500831-000221524.pdf"&gt;
+    &lt;Site&gt;Amilly&lt;/Site&gt;
+    &lt;Canal code="PH"&gt;Pharmacie&lt;/Canal&gt;
+    &lt;Op&gt;0004500831&lt;/Op&gt;
+    &lt;Commande&gt;000221524&lt;/Commande&gt;
+    &lt;Date&gt;2008-04-04 21:11:54&lt;/Date&gt;
+    &lt;Score&gt;0.771902084350586&lt;/Score&gt;
+  &lt;/Result&gt;
+&lt;/ResultSet&gt;</code></pre></p>
+
+<h3>Affichage d'un bon de livraison</h3>
+<p>L'URL d'un bon de livraison se trouve dans l'attribut <b>xlink:href</b> de la balise <b>Result</b>.
+L'appel cette URL est aussi soumise à authentification.</p>
+
+<h2>Exemple d'application .Net faisant appel au Web Service</h2>
+<p><b>Premier exemple</b> avec authentification utilisant un certificat client stocké dans le fichier sds.cer.</p>
+<p><pre><code>using System;
+using System.Xml;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Testhttpsc
+{
+    class Program
+    {
+        // readStream is the stream you need to read
+        // writeStream is the stream you want to write to
+        static private void ReadWriteStream(Stream readStream, Stream writeStream)
+        {
+            int Length = 256;
+            Byte[] buffer = new Byte[Length];
+            int bytesRead = readStream.Read(buffer, 0, Length);
+            // write the required bytes
+            while (bytesRead &gt; 0)
+            {
+                writeStream.Write(buffer, 0, bytesRead);
+                bytesRead = readStream.Read(buffer, 0, Length);
+            }
+            readStream.Close();
+            writeStream.Close();
+        }
+
+        static void Main(string[] args)
+        {
+            string url = "https://cable.sanofi-aventis.com/";
+            string order_number = "0005237791";
+            string certificate_path = "sds.cer";
+            
+            X509Certificate Cert = X509Certificate.CreateFromCertFile(certificate_path);
+            
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "bons.xml?commande=" + order_number);
+            request.UserAgent = "Client Sample";
+            request.Method = "GET";
+            
+            request.ClientCertificates.Add(Cert);
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream receiveStream = response.GetResponseStream();
+            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.LoadXml(readStream.ReadToEnd());
+            response.Close();
+            readStream.Close();
+</code></pre></p>
+<p><pre><code>
+            int i = 1;
+            foreach (XmlNode item in xDoc.GetElementsByTagName("Result"))
+            {
+                string pdf_url = item.Attributes["xlink:href"].InnerText;
+                HttpWebRequest pdf_request = (HttpWebRequest)WebRequest.Create(pdf_url);
+                pdf_request.UserAgent = "Client Sample";
+                pdf_request.Method = "GET";
+
+                pdf_request.ClientCertificates.Add(Cert);
+
+                HttpWebResponse pdf_response = (HttpWebResponse)pdf_request.GetResponse();
+                Stream pdf_receiveStream = pdf_response.GetResponseStream();
+                // create a write stream
+                string pdf_filename = order_number + "-" + i + ".pdf";
+                FileStream pdf_writeStream = new FileStream(pdf_filename, FileMode.Create, FileAccess.Write);
+                // write to the stream
+                ReadWriteStream(pdf_receiveStream, pdf_writeStream);
+                pdf_response.Close();
+                i++;
+            }
+        }		
+    }
+}
+</code></pre></p>
+
+<p><b>Deuxième exemple</b> avec authentification par user/password.</p>
+<p><pre><code>using System;
+using System.Xml;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Testhttpsc
+{
+    class Program
+    {
+        // readStream is the stream you need to read
+        // writeStream is the stream you want to write to
+        static private void ReadWriteStream(Stream readStream, Stream writeStream)
+        {
+            int Length = 256;
+            Byte[] buffer = new Byte[Length];
+            int bytesRead = readStream.Read(buffer, 0, Length);
+            // write the required bytes
+            while (bytesRead &gt; 0)
+            {
+                writeStream.Write(buffer, 0, bytesRead);
+                bytesRead = readStream.Read(buffer, 0, Length);
+            }
+            readStream.Close();
+            writeStream.Close();
+        }
+
+        static void Main(string[] args)
+        {
+            string url = "https://cable.sanofi-aventis.com/";
+            string order_number = "0005237791";
+            string user = "user";
+            string password = "password";
+            
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "bons.xml?commande=" + order_number);
+            request.UserAgent = "Client Sample";
+            request.Method = "GET";
+            
+            request.Credentials = new NetworkCredential(user, password);
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream receiveStream = response.GetResponseStream();
+            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.LoadXml(readStream.ReadToEnd());
+            response.Close();
+            readStream.Close();
+</code></pre></p>
+<p><pre><code>
+            int i = 1;
+            foreach (XmlNode item in xDoc.GetElementsByTagName("Result"))
+            {
+                string pdf_url = item.Attributes["xlink:href"].InnerText;
+                HttpWebRequest pdf_request = (HttpWebRequest)WebRequest.Create(pdf_url);
+                pdf_request.UserAgent = "Client Sample";
+                pdf_request.Method = "GET";
+
+                pdf_request.Credentials = new NetworkCredential(user, password);
+
+                HttpWebResponse pdf_response = (HttpWebResponse)pdf_request.GetResponse();
+                Stream pdf_receiveStream = pdf_response.GetResponseStream();
+                // create a write stream
+                string pdf_filename = order_number + "-" + i + ".pdf";
+                FileStream pdf_writeStream = new FileStream(pdf_filename, FileMode.Create, FileAccess.Write);
+                // write to the stream
+                ReadWriteStream(pdf_receiveStream, pdf_writeStream);
+                pdf_response.Close();
+                i++;
+            }
+        }		
+    }
+}
+</code></pre></p>
+
+<h2>Contact</h2>
+<p>Cette application et son web service sont développés et maintenus par <b>DSI AI - I2S</b><br/>
+Le chargé d'application est <a href="http://annuaire-sa.sanofi-aventis.com/contact.asp?lang=&origin=aventis&id=DUBOISST">Stéphane Dubois</a></p>
+</body>
+</html>

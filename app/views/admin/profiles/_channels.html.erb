@@ -1,0 +1,7 @@
+    <% Channel.find(:all).each do |channel| %>
+		<%= check_box_tag(
+                "profile[channel_ids][]", channel.id, channels.detect{|d| d == channel})
+        %>
+        <%= channel.name %>
+        <br />
+	<%end%>

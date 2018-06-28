@@ -1,0 +1,51 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    function previsu()
+    {
+      $('maintenance_reason_preview').value = $('maintenance_reason').value;
+      if ($('maintenance_is_in_maintenance_true').checked)
+        $('maintenance_is_in_maintenance_preview').value = 'true';
+      else
+        $('maintenance_is_in_maintenance_preview').value = 'false';
+      $('edit_maintenance_preview').submit();
+    }
+</script>
+<% end %>
+
+<h1>Passer le site en mode maintenance</h1>
+
+<%= form_for @maintenance, :url=> {:action=>:update} do |f| %>
+  <% if @maintenance.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize @maintenance.errors.count, "erreur", "erreurs" %> :</h2>
+          <% @maintenance.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </div>
+  <% end %>
+
+  <p><b>Mettre le site en maintenance: </b>
+    Oui <%= f.radio_button(:is_in_maintenance, :true)%>
+    Non <%= f.radio_button(:is_in_maintenance, :false)%>
+  </p>
+  <p>
+    Texte à afficher sur la page de maintenance<br/>
+    <%= f.text_area :reason, :cols => 60, :rows => 20%><br />
+  </p>
+  <p>
+    Message d'information à afficher au dessus du formulaire de recherche<br/>
+    <%= f.text_area :flash_message, :cols => 60, :rows => 20%><br />
+	Couleur du message<br/>
+	<%= f.text_field :flash_message_color%>	
+  </p>  
+  <p>
+    <%= f.submit "Enregistrer" %>
+    <input id="preview_btn" type="button" value="Prévisualiser" onclick="javascript:previsu();"/>
+  </p>
+<% end %>
+
+<% form_for @maintenance, :url=> maintenance_path, :html => {:target => "_blank", :method => :get, :id => 'edit_maintenance_preview'} do |f| %>
+  <%= f.hidden_field :reason, :id => 'maintenance_reason_preview' %>
+  <%= f.hidden_field :is_in_maintenance, :id => 'maintenance_is_in_maintenance_preview' %>
+  <%=  hidden_field_tag :preview, true%>
+<%  end %>

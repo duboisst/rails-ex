@@ -1,0 +1,27 @@
+<h1>Canaux de distribution</h1>
+
+<table>
+  <thead>
+    <tr>
+	  <td>Code</td>
+	  <td>Nom</td>
+	  <td></td><td></td><td></td>
+	</tr>
+  </thead>
+
+  <tbody>
+	<% for channel in @channels %>
+	  <tr>
+	    <td><%=h channel.code %></td>
+	    <td><%=h channel.name %></td>
+	    <td><%= link_to 'Afficher', :action=>:show, :id=>channel.id  %></td>
+	    <td><%= link_to 'Modifier', edit_admin_channel_path(channel) %></td>
+	    <td><%= link_to_unless !channel.profiles.empty?, 'Supprimer', {:action=>:show, :id=>channel.id}, :data => {:confirm => "Etes-vous certain de vouloir supprimer #{channel.name} ?"}, :method => :delete %></td>
+	  </tr>
+	<% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'Nouveau canal', new_admin_channel_path %>

@@ -1,0 +1,18 @@
+<h1>Contacts</h1>
+
+<% for contact in @contacts %>
+        <div class="contact">
+                <div class="name">
+                        <%= contact.name %>
+                </div>
+                <div class="info">
+                        <%= (h contact.info).gsub(/\n/,'<br />').html_safe %>
+                </div>
+                <div class="address">
+                        <%= (h contact.address).gsub(/\n/,'<br />').html_safe %>
+                </div>
+                <div class="tel">
+                        <%= contact.tel %>
+                </div>
+        </div>
+<% end %>
