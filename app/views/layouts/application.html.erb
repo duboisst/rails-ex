@@ -1,14 +1,94 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Welcome to OpenShift</title>
-    <%= csrf_meta_tags %>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <title>Bons de livraison</title>
+  <%= yield :head %>
+</head>
+<body>
 
-  <body>
-    <%= yield %>
-  </body>
+<div id="container">
+  <div id="pageHeader">
+    <h1><span>Bons de livraisons</span></h1>
+    <hr id="HeaderSeparator"/>
+  </div>
+
+  <div id="version">
+    <h1><span>CABLe</span></h1>
+    <h2>version <%=CABLE_VERSION%></h2>
+  </div>
+
+  <div id="menu">
+    <div id="webservice"><%=link_to "web service description", ((root_path=="/")?"":root_path) + "/static/readme.html" %></div>
+    
+    <div id="login">
+      <%if @current_user%>
+        <span id="login_title">Utilisateur: </span><br/><span style="margin-left:5px" id="logged_user"><%=h @current_user.name rescue nil%></span>
+      <%end%>
+    </div>
+
+    <div id="logout">
+     <%if @current_user%>
+     	<p><%=button_to "Déconnexion", "/sessions", :method => :delete %></p>
+     <%else%>
+        <p><%=link_to "Identification", :controller => "/sessions", :action => "new"%></p>
+     <%end%>
+    </div>
+
+    <div id="contact">
+      <p><%= link_to "Contacts", :controller => "/contacts" %></p>
+    </div>
+
+    <%if @current_user%>
+      <p><%= link_to 'Mes dernières recherche', :controller => "/logs", :action => "show"  %><br/></p>
+      <p><%= link_to 'Aide recherche', ((root_path == "/") ? "": root_path) +"/static/search" %></p>
+    <%end%>
+
+    <%if @current_user and @current_user.is_admin %>
+      <div id="admin">
+        <span>Administration</span>
+        <ul>
+          <li><%=link_to "Canaux de distribution", :controller => "/admin/channels"%></li>
+          <li><%=link_to "Profils", :controller => "/admin/profiles"%></li>
+          <li><%=link_to "Utilisateurs", :controller => "/admin/users"%></li>
+          <li><%=link_to "Contacts", :controller => "/admin/contacts"%></li>
+          <li><%=link_to "Maintenance", ((root_path == "/") ?"":root_path) + "/admin/maintenance/edit" %></li>
+        </ul>
+      </div>
+    <%end%>
+  </div>
+
+  <%if @current_user%>
+    <div id="search">
+		<%if !@flash_message.blank?%>
+			<p style="color:<%=@flash_message_color%>;font-weight:bold"><%=h @flash_message%></p>
+		<%end%>
+      <%=  render(:partial  => "/bons/search")  %>
+    </div>
+  <%end%>
+
+  <div id="main">
+    <%if !flash[:notice].nil?%>
+      <div id="flash_notice">
+	<span><%= flash[:notice] %></span>
+      </div>
+    <%end%>
+
+    <div id="page">
+      <%= yield  %>
+    </div>
+  </div>
+
+  <div id="footer"><span></span></div>
+
+</div>
+
+<!-- These extra divs/spans may be used as catch-alls to add extra imagery. -->
+<!-- Add a background image to each and use width and height to control sizing, place with absolute positioning -->
+<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div><div id="extraDiv3"><span></span></div>
+<div id="extraDiv4"><span></span></div><div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
+
+</body>
 </html>
